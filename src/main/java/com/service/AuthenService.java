@@ -16,21 +16,15 @@ public class AuthenService {
 	@Autowired
 	private UserDao userDao;
 	
-	public User user_verify(String email, String password, String company, String role) {
-		
-		User user = new User();
-		
+	public boolean verifyUser(String email, String password, String company, String role) {
+		boolean status = true;
 		try {
 			String en_password = MD5.encrypt(password);
-			user = userDao.user_verify(email, en_password, company, role);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
+			status = userDao.verifyUser(email, en_password, company, role);
+		} catch (Exception e) {
+			status = false;
 			e.printStackTrace();
 		}
-		return user;
-		
+		return status;
 	}
 }

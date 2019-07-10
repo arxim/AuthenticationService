@@ -30,29 +30,15 @@ public class AuthenController {
 		
 		System.out.println("email : " + email + " ,password : " +  password);
 		System.out.println("company : " + company + " ,role : " +  role);
-
-		User user = new User();
-		user = authenService.user_verify(email, password, company, role);
-		
-		return user != null ? "true" : "false";
-		
+		return ""+authenService.verifyUser(email, password, company, role);		
 	}
 	
+	//Test get method
 	@RequestMapping(value = "/user_verify/{email}/{password}/{role}/{company}", method = RequestMethod.GET)
 	public @ResponseBody String user_verify_get(@PathVariable("email") String email, @PathVariable("password") String password, @PathVariable("company") String company, @PathVariable("role") String role, HttpServletRequest request) {
-		System.out.println("email " + email + " ,password " +  password);
-		
-		User user = new User();
-		user = authenService.user_verify(email, password, company, role);
-		
-		HttpSession session = request.getSession(true);
-		if (user != null) {
-			
-			session.setAttribute("_user", user);
-		}
-		
-		System.out.println(session.getAttribute("_user").toString());
-		return user != null ? "true" : "false";
-		
+		System.out.println("email : " + email + " ,password : " +  password);
+		System.out.println("company : " + company + " ,role : " +  role);
+		return ""+authenService.verifyUser(email, password, company, role);		
 	}
+	//end test
 }

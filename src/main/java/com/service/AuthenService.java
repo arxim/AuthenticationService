@@ -20,7 +20,7 @@ public class AuthenService {
 		boolean status = true;
 		try {
 			String en_password = MD5.encrypt(password);
-			status = userDao.verifyUser(email, en_password, company, role);
+			status = userDao.verifyUser(email, password, company, role);
 		} catch (Exception e) {
 			status = false;
 			e.printStackTrace();

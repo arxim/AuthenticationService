@@ -84,32 +84,35 @@ public class UserDao {
 	}
 
 	public boolean resetPassword(String email, String password, String companyCode, String roleCode) {
-		boolean b = true;
-		DBConnector dbConnector = null;
-		Connection connect = null;
-		PreparedStatement ps = null;
-		
+		boolean status = true;
+		DBConnection dbConn = new DBConnection("mysql");
+		String sql = "";
 		try {
-			dbConnector = new DBConnector();
-			connect = dbConnector.getConnect();
-			
-			if (connect != null) {
-				String sql = "UPDATE tb_mst_users SET password = '"+ password +"' "
-							+ "WHERE email = '"+ email +"'"
-							+ " AND company_code ='"+ companyCode +"'"
-							+ " AND role_code ='"+ roleCode +"'";
-				ps = connect.prepareStatement(sql);
-				ps.executeUpdate();
-				b = true; 
+			if (dbConn.getConnection() != null) {
+				sql = "UPDATE tb_mst_users SET password = ? "
+					+ "WHERE email = ? "
+					+ "AND company_code = ? "
+					+ "AND role_code = ?";
+				dbConn.setPrepareStatement(sql);
+				dbConn.getPrepareStatement().setString(1, password);
+				dbConn.getPrepareStatement().setString(2, email);
+				dbConn.getPrepareStatement().setString(3, companyCode);
+				dbConn.getPrepareStatement().setString(4, roleCode);
+				dbConn.getPrepareStatement().executeUpdate();
+				dbConn.doCommit();
 			}
-			
 		} catch (Exception e) {
+			status = false;
 			e.printStackTrace();
-			b = false;
 		} finally {
-			dbConnector.disConnect(connect, ps);
+			try {
+				dbConn.getPrepareStatement().close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			dbConn.doDisconnect();
 		}
-		return b;	
+		return status;	
 	}
 
 	public boolean activateUser(String email, String companyCode, String roleCode) {

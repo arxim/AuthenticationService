@@ -36,6 +36,8 @@ public class AuthenController {
 		return ""+authenService.verifyUser(email, password, company, role);		
 	}
 	
+	
+	/*------------------- test block -------------------*/
 	//Get method for Test
 	@RequestMapping(value = "/user_verify/{email}/{password}/{company}/{role}", method = RequestMethod.GET)
 	public String user_verify_get(@PathVariable("email") String email, @PathVariable("password") String password, @PathVariable("company") String company, @PathVariable("role") String role, HttpServletRequest request) {
@@ -53,7 +55,7 @@ public class AuthenController {
 	@RequestMapping(value = "/ext_forward", method = RequestMethod.GET)
 	public ModelAndView user_verify_get() {
 		System.out.println("Get Method <|> email : ");
-	    return new ModelAndView("redirect:" + "https://www.google.com/test");
+	    return new ModelAndView("redirect:" + "https://www.google.com");
 		//RedirectView a = new RedirectView();
 		//a.setUrl("https://www.google.com/test");
 		//return a;
